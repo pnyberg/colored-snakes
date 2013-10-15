@@ -16,14 +16,16 @@ public class ColoredSnake {
 	
 	// a variable to help determine if the snake should become longer
 	private boolean growOnNextMove;
+	// variable describing if snake is alive
+	private boolean alive;
 	
 	// gives the direction of the snake
 	private String snakeDirection;
 	
 	// shift of the x-coordinate
-	private int shiftX;
+	private int repositioningX;
 	// shift of the y-coordinate
-	private int shiftY;
+	private int repositioningY;
 	
 	/**
 	 * 
@@ -31,21 +33,64 @@ public class ColoredSnake {
 	 * @param y		the y-coordinate of the snake
 	 */
 	public ColoredSnake(int x, int y, String snakeDirection) {
-		bodyPartPositions = new LinkedList<SnakePart>();
+		bodyPartPositions = new LinkedList<SnakePart>(); // creates an empty list of SnakeParts
 		
+		initSnake(x, y, snakeDirection);
+	}
+	
+	public void renew(int x, int y, String snakeDirection) {
+		bodyPartPositions.clear();
+		
+		initSnake(x, y, snakeDirection);
+	}
+	
+	private void initSnake(int x, int y, String snakeDirection) {
 		this.snakeDirection = snakeDirection;
 		
 		growOnNextMove = false; // the snake should now grow on startup
+		alive = true;
 		
 		bodyPartPositions.add(new SnakePart(x, y));
+		
+		createRemainderSnake(x, y, snakeDirection);
+	}
+
+	public void createRemainderSnake(int x, int y, String snakeDirection) {
+		if(snakeDirection.equals("up")) {
+			bodyPartPositions.add(new SnakePart(x, y+1));
+			bodyPartPositions.add(new SnakePart(x, y+2));
+		} else if(snakeDirection.equals("right")) {
+			bodyPartPositions.add(new SnakePart(x-1, y));
+			bodyPartPositions.add(new SnakePart(x-2, y));
+		} else if(snakeDirection.equals("down")) {
+			bodyPartPositions.add(new SnakePart(x, y-1));
+			bodyPartPositions.add(new SnakePart(x, y-2));
+		} else if(snakeDirection.equals("left")) {
+			bodyPartPositions.add(new SnakePart(x+1, y));
+			bodyPartPositions.add(new SnakePart(x+2, y));
+		}
+	}
+	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void setPosition(int x, int y) {
+		bodyPartPositions.get(0).setX(x);
+		bodyPartPositions.get(0).setY(y);
 	}
 
 	/**
 	 * Sets the shifting of the snakes position
 	 */
-	public void setPositionBase(int addX, int addY) {
-		shiftX = addX;
-		shiftY = addY;
+	public void setPositionBase(int additionalX, int additionalY) {
+		repositioningX = additionalX;
+		repositioningY = additionalY;
+	}
+	
+	public void setAlive(boolean alive) {
+		this.alive = alive;
 	}
 	
 	/**
@@ -60,11 +105,12 @@ public class ColoredSnake {
 		 // a variable to help expand the snake
 		SnakePart growingPosition = null;
 		
+		// puts the last part of the snake in the "growing"-variable
 		if(growOnNextMove) {
 			growingPosition = new SnakePart(bodyPartPositions.get(bodyPartPositions.size()-1));
 		}
 		
-		// moves all of the current snakeparts except from the head
+		// moves all of the current snakeparts except from the head (part-index 0)
 		for(int i = bodyPartPositions.size()-1 ; i > 0 ; i--) {
 			bodyPartPositions.get(i).setPosition(bodyPartPositions.get(i-1));
 		}
@@ -79,7 +125,7 @@ public class ColoredSnake {
 		else if(snakeDirection.equals("left"))
 			bodyPartPositions.get(0).setPosition(bodyPartPositions.get(0).getX()-1,bodyPartPositions.get(0).getY());
 		
-		// adds the new part to the snake
+		// adds the new part to the snake and resets the "should grow"-boolean
 		if(growOnNextMove) {
 			bodyPartPositions.addLast(growingPosition);
 			growOnNextMove = false;
@@ -88,6 +134,7 @@ public class ColoredSnake {
 	
 	/**
 	 * Method that adds a new part to the snake
+	 * The new part is placed last in the list
 	 * 
 	 * @param snakePart		SnakePart that is added to the snake
 	 */
@@ -97,6 +144,7 @@ public class ColoredSnake {
 	
 	/**
 	 * Sets a new direction for the snake
+	 * The string will be "up"/"right"/"down"/"left"
 	 * 
 	 * @param snakeDirection
 	 */
@@ -112,6 +160,14 @@ public class ColoredSnake {
 	 */
 	public boolean isGrowOnNextMove() {
 		return growOnNextMove;
+	}
+	
+	/**
+	 * Tells whether the snake is alive or not
+	 * @return alive
+	 */
+	public boolean isAlive() {
+		return alive;
 	}
 
 	/**
@@ -148,6 +204,7 @@ public class ColoredSnake {
 	public int getSnakeLength() {
 		return bodyPartPositions.size();
 	}
+
 	/**
 	 * Paints the snake (part by part)
 	 * 
@@ -155,6 +212,6 @@ public class ColoredSnake {
 	 */
 	public void paint(Graphics g) {
 		for(int i = 0 ; i < bodyPartPositions.size() ; i++)
-			bodyPartPositions.get(i).paint(g, shiftX, shiftY);
+			bodyPartPositions.get(i).paint(g, repositioningX, repositioningY);
 	}
 }

@@ -14,7 +14,6 @@ public class SnakePart {
 	private int y;
 	
 	/**
-	 * 
 	 * @param x		x-coordinate of the snake
 	 * @param y		y-coordinate of the snake
 	 */
@@ -53,6 +52,21 @@ public class SnakePart {
 	}
 	
 	/**
+	 * @param x		x-coordinate
+	 */
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	/**
+	 * @param y		y-coordinate
+	 */
+	public void setY(int y) {
+		this.y = y;
+	}
+
+
+	/**
 	 * Help-method who prints out the parts of the snake
 	 * 
 	 * @return		the position of the SnakePart
@@ -62,7 +76,6 @@ public class SnakePart {
 	}
 	
 	/**
-	 * 
 	 * @return x-coordinate
 	 */
 	public int getX() {
@@ -70,7 +83,6 @@ public class SnakePart {
 	}
 
 	/**
-	 * 
 	 * @return y-coordinate
 	 */
 	public int getY() {
@@ -82,10 +94,10 @@ public class SnakePart {
 	 * 
 	 * @param g		Graphics-parameter, used to paint the snakePart
 	 */
-	public void paint(Graphics g, int shiftX, int shiftY) {
+	public void paint(Graphics g, int additionalPositionX, int additionalPositionY) {
 		g.setColor(Color.red);
-		g.fillOval(shiftX + x*10, shiftY + y*10, 10, 10);
+		g.fillOval(additionalPositionX + x*10, additionalPositionY + y*10, 10, 10);
 		g.setColor(Color.black);
-		g.fillOval(shiftX + x*10, shiftY + y*10, 10, 10);
+		g.fillOval(additionalPositionX + x*10, additionalPositionY + y*10, 10, 10);
 	}
 }

@@ -6,9 +6,9 @@ public class SnakeGrowthItem {
 	// the y-coordinate
 	private int y;
 	// the shift in x-coordinate
-	private int shiftX;
+	private int repositioningX;
 	// the shift in y-coordinate
-	private int shiftY;
+	private int repositioningY;
 	
 	/**
 	 * Sets the position of the growth-object
@@ -20,22 +20,22 @@ public class SnakeGrowthItem {
 		this.y = y;
 	}
 	
-	public void setPositionBase(int addX, int addY) {
-		shiftX = addX;
-		shiftY = addY;
+	public void setPositionBase(int additionalX, int additionalY) {
+		repositioningX = additionalX;
+		repositioningY = additionalY;
 	}
+
 	/**
 	 * Paints the item
 	 */
 	public void paint(Graphics g) {
 		g.setColor(Color.red);
-		g.fillOval(shiftX + x*10, shiftY + y*10, 10, 10);
+		g.fillOval(repositioningX + x*10, repositioningY + y*10, 10, 10);
 		g.setColor(Color.black);
-		g.drawOval(shiftX + x*10, shiftY + y*10, 10, 10);
+		g.drawOval(repositioningX + x*10, repositioningY + y*10, 10, 10);
 	}
 
 	/**
-	 * 
 	 * @return x-coordinate
 	 */
 	public int getX() {
@@ -44,7 +44,6 @@ public class SnakeGrowthItem {
 
 	/**
 	 * Sets the x-coordinate
-	 * 
 	 * @param x
 	 */
 	public void setX(int x) {
@@ -52,7 +51,6 @@ public class SnakeGrowthItem {
 	}
 
 	/**
-	 * 
 	 * @return y-coordinate
 	 */
 	public int getY() {

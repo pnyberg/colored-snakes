@@ -5,15 +5,20 @@
  */
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class SnakePlayer {
 	// The snake of the player
 	private ColoredSnake snake;
 	// variable to prevent the snake from turning into itself
 	private boolean alreadyTurned;
+	// value of the left key
+	private int leftKeyValue;
+	// value of the right key
+	private int rightKeyValue;
 	
 	/**
-	 * Should also have a parameter for the keys used to navigate
+	 * TODO Should also have a parameter for the keys used to navigate
 	 * the snake (up/down/right/left)
 	 * 
 	 * @param x
@@ -23,9 +28,13 @@ public class SnakePlayer {
 		snake = new ColoredSnake(x, y, snakeDirection);
 
 		alreadyTurned = false;
-
-		snake.addSnakePart(new SnakePart(x+1,y));
-		snake.addSnakePart(new SnakePart(x+2,y));
+		
+		leftKeyValue = KeyEvent.VK_A;
+		rightKeyValue = KeyEvent.VK_S;
+	}
+	
+	public void resetSnake(int x, int y, String snakeDirection) {
+		snake.renew(x, y, snakeDirection);
 	}
 	
 	/**
@@ -33,8 +42,17 @@ public class SnakePlayer {
 	 * That is, add x-coordinates and y-coordinates to the 
 	 * snakes position
 	 */
-	public void setSnakePositionBase(int addX, int addY) {
-		snake.setPositionBase(addX, addY);
+	public void setSnakePositionBase(int additionalX, int additionalY) {
+		snake.setPositionBase(additionalX, additionalY);
+	}
+	
+	public void setKeyBindings(int leftKeyValue, int rightKeyValue) {
+		this.leftKeyValue = leftKeyValue;
+		this.rightKeyValue = rightKeyValue;
+	}
+	
+	public void setSnakeAlive(boolean isAlive) {
+		snake.setAlive(isAlive);
 	}
 	/**
 	 * Calls the move-function of the snake
@@ -56,6 +74,7 @@ public class SnakePlayer {
 	public void turn(String direction) {
 		// prevents the snake to turn into itself
 		if(!alreadyTurned) {
+			// sets the new direction for the snake and makes sure the snake won't "turn into itself"
 			snake.setSnakeDirection(direction);
 			alreadyTurned = true;
 		}
@@ -87,13 +106,10 @@ public class SnakePlayer {
 	public String getSnakeDirection() {
 		return snake.getSnakeDirection();
 	}
-	// getKeyCodeUp()
 	
-	// getKeyCodeRight()
+	// TODO getKeyCodeLeft()
 	
-	// getKeyCodeDown()
-	
-	// getKeyCodeLeft()
+	// TODO getKeyCodeRight()
 	
 	/**
 	 * Returns a specified part of the snake
@@ -115,37 +131,18 @@ public class SnakePlayer {
 	}
 	
 	/**
-	 * Testing-ground
-	 * DO not BE here
+	 * 
 	 */
-	public static void main(String[] args) {
-		SnakePlayer snakePlayer = new SnakePlayer(0,0,"up");
-		
-		System.out.println("The position of the snake is now: " + snakePlayer.getSnakePart(0).printPosition());
-		snakePlayer.move();
-		System.out.println("The position of the snake is now: " + snakePlayer.getSnakePart(0).printPosition());
-		snakePlayer.turn("right");
-		snakePlayer.move();
-		System.out.println("The position of the snake is now: " + snakePlayer.getSnakePart(0).printPosition());
-		snakePlayer.move();
-		System.out.println("The position of the snake is now: " + snakePlayer.getSnakePart(0).printPosition());
-		snakePlayer.turn("down");
-		snakePlayer.move();
-		System.out.println("The position of the snake is now: " + snakePlayer.getSnakePart(0).printPosition());
-		snakePlayer.move();
-		System.out.println("The position of the snake is now: " + snakePlayer.getSnakePart(0).printPosition());
-		snakePlayer.move();
-		System.out.println("The position of the snake is now: " + snakePlayer.getSnakePart(0).printPosition());
-		snakePlayer.move();
-		System.out.println("The position of the snake is now: " + snakePlayer.getSnakePart(0).printPosition());
-		snakePlayer.turn("left");
-		snakePlayer.move();
-		System.out.println("The position of the snake is now: " + snakePlayer.getSnakePart(0).printPosition());
-		snakePlayer.move();
-		System.out.println("The position of the snake is now: " + snakePlayer.getSnakePart(0).printPosition());
-		snakePlayer.move();
-		System.out.println("The position of the snake is now: " + snakePlayer.getSnakePart(0).printPosition());
-		snakePlayer.move();
-		System.out.println("The position of the snake is now: " + snakePlayer.getSnakePart(0).printPosition());
+	public boolean isSnakeAlive() {
+		return snake.isAlive();
 	}
+	
+	public int getLeftKeyValue() {
+		return leftKeyValue;
+	}
+	
+	public int getRightKeyValue() {
+		return rightKeyValue;
+	}
+	 
 }
