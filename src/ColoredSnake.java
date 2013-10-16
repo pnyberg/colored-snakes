@@ -1,10 +1,9 @@
-
 /**
  * A first attempt to create a "snake" that may crawl 
  * through any hypothetical maze I will create later
  * 
  * @author Per Nyberg
- * @version 2013.10.08
+ * @version 2013.10.16
  */
 
 import java.awt.*;
@@ -22,59 +21,79 @@ public class ColoredSnake {
 	// gives the direction of the snake
 	private String snakeDirection;
 	
-	// shift of the x-coordinate
+	// the "repositioning" of the x-coordinate
 	private int repositioningX;
-	// shift of the y-coordinate
+	// the "repositioning" of the y-coordinate
 	private int repositioningY;
 	
 	/**
-	 * 
-	 * @param x		the x-coordinate of the snake
-	 * @param y		the y-coordinate of the snake
+	 * Initiates the snake with it's body in the form of a 
+	 * list and the position and moving-direction of the head.
+	 * @param x	the x-coordinate of the snake
+	 * @param y	the y-coordinate of the snake
 	 */
 	public ColoredSnake(int x, int y, String snakeDirection) {
-		bodyPartPositions = new LinkedList<SnakePart>(); // creates an empty list of SnakeParts
+		// creates an empty list of SnakeParts
+		bodyPartPositions = new LinkedList<SnakePart>();
 		
 		initSnake(x, y, snakeDirection);
 	}
 	
+	/**
+	 * Renews the position and moving-direction of the 
+	 * snake (the head).
+	 */
 	public void renew(int x, int y, String snakeDirection) {
 		bodyPartPositions.clear();
 		
 		initSnake(x, y, snakeDirection);
 	}
 	
+	/**
+	 * Initiate the details of the snake:
+	 * - position of the head of the snake
+	 * - direction for moving (of the head)
+	 * - sets if the snake is alive and if it should grow
+	 * - creates the head and the body
+	 */
 	private void initSnake(int x, int y, String snakeDirection) {
 		this.snakeDirection = snakeDirection;
 		
-		growOnNextMove = false; // the snake should now grow on startup
+		// the snake should now grow on startup
+		growOnNextMove = false;
+		// however, it should be alive :)
 		alive = true;
 		
+		// create the head
 		bodyPartPositions.add(new SnakePart(x, y));
 		
 		createRemainderSnake(x, y, snakeDirection);
 	}
 
+	/**
+	 * Creates the rest of the body of the snake
+	 * For now, it's a three-part-body in the beginning
+	 */
 	public void createRemainderSnake(int x, int y, String snakeDirection) {
-		if(snakeDirection.equals("up")) {
-			bodyPartPositions.add(new SnakePart(x, y+1));
-			bodyPartPositions.add(new SnakePart(x, y+2));
-		} else if(snakeDirection.equals("right")) {
-			bodyPartPositions.add(new SnakePart(x-1, y));
-			bodyPartPositions.add(new SnakePart(x-2, y));
-		} else if(snakeDirection.equals("down")) {
-			bodyPartPositions.add(new SnakePart(x, y-1));
-			bodyPartPositions.add(new SnakePart(x, y-2));
-		} else if(snakeDirection.equals("left")) {
-			bodyPartPositions.add(new SnakePart(x+1, y));
-			bodyPartPositions.add(new SnakePart(x+2, y));
+		// depending on the direction of the snake the rest of 
+		// the bodyparts are placed out differently
+		if (snakeDirection.equals("up")) {
+			bodyPartPositions.add(new SnakePart(x, y + 1));
+			bodyPartPositions.add(new SnakePart(x, y + 2));
+		} else if (snakeDirection.equals("right")) {
+			bodyPartPositions.add(new SnakePart(x - 1, y));
+			bodyPartPositions.add(new SnakePart(x - 2, y));
+		} else if (snakeDirection.equals("down")) {
+			bodyPartPositions.add(new SnakePart(x, y - 1));
+			bodyPartPositions.add(new SnakePart(x, y - 2));
+		} else if (snakeDirection.equals("left")) {
+			bodyPartPositions.add(new SnakePart(x + 1, y));
+			bodyPartPositions.add(new SnakePart(x + 2, y));
 		}
 	}
 	
 	/**
-	 * 
-	 * @param x
-	 * @param y
+	 * Sets the position of the head of the snake
 	 */
 	public void setPosition(int x, int y) {
 		bodyPartPositions.get(0).setX(x);
@@ -83,23 +102,27 @@ public class ColoredSnake {
 
 	/**
 	 * Sets the shifting of the snakes position
+	 * Shifting meaning the amount of pixels the picture is moved
+	 * from where the paintComponent-method counts as 0.
 	 */
 	public void setPositionBase(int additionalX, int additionalY) {
 		repositioningX = additionalX;
 		repositioningY = additionalY;
 	}
 	
+	/**
+	 * Setting the snake to dead or alive
+	 */
 	public void setAlive(boolean alive) {
 		this.alive = alive;
 	}
 	
 	/**
 	 * Moves the snake in a specified direction
-	 * If the snake should grow the end of the snake "stands still"
+	 * If the snake should grow the end of the snake "stands still",
 	 * that is, becomes the new part of the snake (while the other 
-	 * part moves one step "forward"
-	 * 
-	 * @param direction		a string representing "up"/"right"/"down"/"left"
+	 * part moves one step "forward").
+	 * @param direction	a string representing "up"/"right"/"down"/"left"
 	 */
 	public void move() {
 		 // a variable to help expand the snake
@@ -111,6 +134,8 @@ public class ColoredSnake {
 		}
 		
 		// moves all of the current snakeparts except from the head (part-index 0)
+		// the bodyparts new position is the position of the bodypart who is "in 
+		// front of" the bodypart looked at
 		for(int i = bodyPartPositions.size()-1 ; i > 0 ; i--) {
 			bodyPartPositions.get(i).setPosition(bodyPartPositions.get(i-1));
 		}
@@ -134,9 +159,8 @@ public class ColoredSnake {
 	
 	/**
 	 * Method that adds a new part to the snake
-	 * The new part is placed last in the list
-	 * 
-	 * @param snakePart		SnakePart that is added to the snake
+	 * The new part is placed last in the list/body
+	 * @param snakePart	the snakepart that is added to the snake
 	 */
 	public void addSnakePart(SnakePart snakePart) {
 		bodyPartPositions.add(snakePart);
@@ -144,8 +168,7 @@ public class ColoredSnake {
 	
 	/**
 	 * Sets a new direction for the snake
-	 * The string will be "up"/"right"/"down"/"left"
-	 * 
+	 * The string should be "up"/"right"/"down"/"left"
 	 * @param snakeDirection
 	 */
 	public void setSnakeDirection(String snakeDirection) {
@@ -153,9 +176,8 @@ public class ColoredSnake {
 	}
 
 	/**
-	 * Returns whether the snake will grow one part on the next
-	 * movement (or not)
-	 * 
+	 * Returns whether the snake will grow (one part) on
+	 * the next movement (or not).
 	 * @return growOnNextMove	boolean
 	 */
 	public boolean isGrowOnNextMove() {
@@ -164,7 +186,7 @@ public class ColoredSnake {
 	
 	/**
 	 * Tells whether the snake is alive or not
-	 * @return alive
+	 * @return alive	boolean
 	 */
 	public boolean isAlive() {
 		return alive;
@@ -177,28 +199,19 @@ public class ColoredSnake {
 		growOnNextMove = true;
 	}
 	
-	/**
-	 * Returns the direction of the snake
-	 * 
-	 * @return snakeDirection
-	 */
 	public String getSnakeDirection() {
 		return snakeDirection;
 	}
 	
 	/**
-	 * Returns specified part of the snake
-	 * 
-	 * @param index
-	 * @return the part of the snake specified by the index
+	 * @param index	specifies which part to return
+	 * @return specific part of the snake
 	 */
 	public SnakePart getSnakePart(int index) {
 		return bodyPartPositions.get(index);
 	}
 	
 	/**
-	 * Returns the size of the snake (numbers of parts)
-	 * 
 	 * @return the length of the snake
 	 */
 	public int getSnakeLength() {
@@ -207,8 +220,7 @@ public class ColoredSnake {
 
 	/**
 	 * Paints the snake (part by part)
-	 * 
-	 * @param g		Graphics-parameter to paint
+	 * @param g	Graphics-parameter to paint
 	 */
 	public void paint(Graphics g) {
 		for(int i = 0 ; i < bodyPartPositions.size() ; i++)
