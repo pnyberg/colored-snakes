@@ -1,3 +1,4 @@
+package originalSnake;
 import java.awt.*;
 
 public class SnakeGrowthItem {

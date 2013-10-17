@@ -1,5 +1,7 @@
+package originalSnake;
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 /**
@@ -297,5 +299,8 @@ public class SnakePanel extends JPanel implements ActionListener {
 
 		g.setColor(Color.white);
 		g.drawString("Current size of snake: " + snakePlayer.getSnakeLength(), width*5-50, height*10+30);
+	}
+	public static void main(String[] args) {
+		System.out.println("Compiling SnakePanel");
 	}
 }

@@ -1,3 +1,4 @@
+package originalSnake;
 
 public class KeyOption {
 	// value of the key
@@ -30,8 +31,7 @@ public class KeyOption {
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		System.out.println("Compiling KeyOption");
 	}
 
 }

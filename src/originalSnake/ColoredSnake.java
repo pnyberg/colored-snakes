@@ -1,3 +1,4 @@
+package originalSnake;
 
 /**
  * A first attempt to create a "snake" that may crawl 
@@ -213,5 +214,9 @@ public class ColoredSnake {
 	public void paint(Graphics g) {
 		for(int i = 0 ; i < bodyPartPositions.size() ; i++)
 			bodyPartPositions.get(i).paint(g, repositioningX, repositioningY);
+	}
+
+	public static void main(String[] args) {
+		System.out.println("Compiling ColoredSnake");
 	}
 }

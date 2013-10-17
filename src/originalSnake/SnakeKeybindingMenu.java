@@ -1,6 +1,8 @@
+package originalSnake;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+
 import javax.swing.*;
 
 public class SnakeKeybindingMenu extends JFrame implements ActionListener {
@@ -127,6 +129,10 @@ public class SnakeKeybindingMenu extends JFrame implements ActionListener {
 		keyOptions.add(new KeyOption(KeyEvent.VK_ALT, "Alt"));
 		keyOptions.add(new KeyOption(KeyEvent.VK_DELETE, "Del"));
 		keyOptions.add(new KeyOption(KeyEvent.VK_ESCAPE, "Esc"));
+		keyOptions.add(new KeyOption(KeyEvent.VK_UP, "Up Arrow"));
+		keyOptions.add(new KeyOption(KeyEvent.VK_RIGHT, "Right Arrow"));
+		keyOptions.add(new KeyOption(KeyEvent.VK_DOWN, "Down Arrow"));
+		keyOptions.add(new KeyOption(KeyEvent.VK_LEFT, "Left Arrow"));
 		
 		// add som items to the "leftKey"-box and the "rightKey"-box
 
@@ -165,5 +171,8 @@ public class SnakeKeybindingMenu extends JFrame implements ActionListener {
 		}
 		
 		checkSameKeys();
+	}
+	public static void main(String[] args) {
+		System.out.println("Compiling SnakeKeybindingMenu");
 	}
 }

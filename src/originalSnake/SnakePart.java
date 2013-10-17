@@ -1,3 +1,4 @@
+package originalSnake;
 /**
  * A part of the snake (the position of that part)
  * 
@@ -99,5 +100,8 @@ public class SnakePart {
 		g.fillOval(additionalPositionX + x*10, additionalPositionY + y*10, 10, 10);
 		g.setColor(Color.black);
 		g.fillOval(additionalPositionX + x*10, additionalPositionY + y*10, 10, 10);
+	}
+	public static void main(String[] args) {
+		System.out.println("Compiling SnakePart");
 	}
 }

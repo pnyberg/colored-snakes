@@ -1,3 +1,4 @@
+package originalSnake;
 /**
  * 
  * @author Per Nyberg
@@ -145,4 +146,7 @@ public class SnakePlayer {
 		return rightKeyValue;
 	}
 	 
+	public static void main(String[] args) {
+		System.out.println("Compiling SnakePlayer");
+	}
 }
