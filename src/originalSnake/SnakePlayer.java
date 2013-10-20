@@ -1,9 +1,10 @@
-package originalSnake;
 /**
  * 
  * @author Per Nyberg
  * @version 2013.10.08
  */
+
+package originalSnake;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -13,25 +14,31 @@ public class SnakePlayer {
 	private ColoredSnake snake;
 	// variable to prevent the snake from turning into itself
 	private boolean alreadyTurned;
+	// variable used for giving points (only once) to other players
+	private boolean diedThisRound;
 	// value of the left key
 	private int leftKeyValue;
 	// value of the right key
 	private int rightKeyValue;
+	// points for the player
+	private int points;
 	
 	/**
-	 * TODO Should also have a parameter for the keys used to navigate
-	 * the snake (up/down/right/left)
-	 * 
 	 * @param x
 	 * @param y
 	 */
-	public SnakePlayer(int x, int y, String snakeDirection) {
-		snake = new ColoredSnake(x, y, snakeDirection);
+	public SnakePlayer(int x, int y, String snakeDirection, int leftKeyValue, int rightKeyValue, Color snakeColor) {
+		snake = new ColoredSnake(x, y, snakeDirection, snakeColor);
 
 		alreadyTurned = false;
 		
-		leftKeyValue = KeyEvent.VK_A;
-		rightKeyValue = KeyEvent.VK_S;
+		this.leftKeyValue = leftKeyValue;
+		this.rightKeyValue = rightKeyValue;
+		
+		points = 0;
+	}
+	public SnakePlayer(int x, int y, String snakeDirection) {
+		this(x, y, snakeDirection, KeyEvent.VK_A, KeyEvent.VK_S, Color.black);
 	}
 	
 	public void resetSnake(int x, int y, String snakeDirection) {
@@ -55,6 +62,11 @@ public class SnakePlayer {
 	public void setSnakeAlive(boolean isAlive) {
 		snake.setAlive(isAlive);
 	}
+	
+	public void killedThisRound(boolean diedThisRound) {
+		this.diedThisRound = diedThisRound;
+	}
+	
 	/**
 	 * Calls the move-function of the snake
 	 * The direction is pre-determined
@@ -99,6 +111,10 @@ public class SnakePlayer {
 		snake.paint(g);
 	}
 	
+	public void addPoint(int points) {
+		this.points += points;
+	}
+
 	/**
 	 * Returns the direction of the snake
 	 * 
@@ -108,9 +124,16 @@ public class SnakePlayer {
 		return snake.getSnakeDirection();
 	}
 	
-	// TODO getKeyCodeLeft()
-	
-	// TODO getKeyCodeRight()
+	/**
+	 * @return
+	 */
+	public int getPoints() {
+		return points;
+	}
+
+	public Color getColor() {
+		return snake.getColor();
+	}
 	
 	/**
 	 * Returns a specified part of the snake
@@ -136,6 +159,14 @@ public class SnakePlayer {
 	 */
 	public boolean isSnakeAlive() {
 		return snake.isAlive();
+	}
+	
+	/**
+	 * Method used for helping giving points to players
+	 * @return if the snake died during the last movement-phase
+	 */
+	public boolean didJustDie() {
+		return diedThisRound;
 	}
 	
 	public int getLeftKeyValue() {

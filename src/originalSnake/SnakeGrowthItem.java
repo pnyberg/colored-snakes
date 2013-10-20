@@ -1,4 +1,9 @@
+/**
+ * The item that when eaten will grow the snake +1
+ */
+
 package originalSnake;
+
 import java.awt.*;
 
 public class SnakeGrowthItem {

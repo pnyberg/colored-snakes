@@ -13,14 +13,17 @@ public class SnakePart {
 	private int x;
 	// y-coordinate
 	private int y;
+	// color
+	private Color snakeColor;
 	
 	/**
 	 * @param x		x-coordinate of the snake
 	 * @param y		y-coordinate of the snake
 	 */
-	public SnakePart(int x, int y) {
+	public SnakePart(int x, int y, Color snakeColor) {
 		this.x = x;
 		this.y = y;
+		this.snakeColor = snakeColor;
 	}
 	
 	/**
@@ -96,9 +99,7 @@ public class SnakePart {
 	 * @param g		Graphics-parameter, used to paint the snakePart
 	 */
 	public void paint(Graphics g, int additionalPositionX, int additionalPositionY) {
-		g.setColor(Color.red);
-		g.fillOval(additionalPositionX + x*10, additionalPositionY + y*10, 10, 10);
-		g.setColor(Color.black);
+		g.setColor(snakeColor);
 		g.fillOval(additionalPositionX + x*10, additionalPositionY + y*10, 10, 10);
 	}
 	public static void main(String[] args) {

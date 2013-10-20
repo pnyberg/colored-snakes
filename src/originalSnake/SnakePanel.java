@@ -1,15 +1,16 @@
-package originalSnake;
-import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.*;
-
 /**
  * The panel on which the snake is painted (and moved)
  * 
  * @author Per Nyberg
  * @version 2013.10.10
  */
+
+package originalSnake;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
 public class SnakePanel extends JPanel implements ActionListener {
 	// the player which controlls the snake
 	private SnakePlayer snakePlayer;

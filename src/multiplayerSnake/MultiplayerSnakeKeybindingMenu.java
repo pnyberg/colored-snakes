@@ -1,50 +1,68 @@
-/**
- * Meny för att ställa in keybindings
- */
+package multiplayerSnake;
 
-package originalSnake;
+import originalSnake.KeyOption;
 
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.LinkedList;
 
-public class SnakeKeybindingMenu extends JFrame implements ActionListener {
-	//
-	private SnakeFrame snakeFrame;
-	//
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class MultiplayerSnakeKeybindingMenu  extends JFrame implements ActionListener {
+	// the panel where the game takes place
+	private MultiplayerSnakeFrame snakeFrame;
+	// a list of possible KeyBindings
 	private LinkedList<KeyOption> keyOptions;
 	//
 	private JPanel panel;
 	//
 	private JPanel buttonPane;
 	//
+	private JPanel snakePlayerPane;
+	//
 	private JPanel leftKeyPane;
 	//
 	private JPanel rightKeyPane;
 	//
+	private JLabel snakePlayerLabel;
+	//
 	private JLabel leftKeyLabel;
 	//
 	private JLabel rightKeyLabel;
-	// when you're done
+	// to exit from the menu-window
 	private JButton exitButton;
-	//
+	// alternativ för
+	private JComboBox<String> snakePlayerString;
+	// list of names of the keybindings for the right
 	private JComboBox<String> leftKeyString;
 	//
 	private JComboBox<String> rightKeyString;
+	// 
+	private int numberOfPlayers;
 
-	public SnakeKeybindingMenu(SnakeFrame snakeFrame) {
+	public MultiplayerSnakeKeybindingMenu(MultiplayerSnakeFrame snakeFrame, int numberOfPlayers) {
 		// the parameters give the frame so the keybindings can be changed
 		this.snakeFrame = snakeFrame;
+		
+		this.numberOfPlayers = numberOfPlayers;
 
 		keyOptions = new LinkedList<KeyOption>();
 		
 		// creates some panels
 		panel = new JPanel();
 		buttonPane = new JPanel();
+		snakePlayerPane = new JPanel();
 		leftKeyPane = new JPanel();
 		rightKeyPane = new JPanel();
 		
 		// create some labels
+		snakePlayerLabel = new JLabel("Choose player");
 		leftKeyLabel = new JLabel("Left Key");
 		rightKeyLabel = new JLabel("Right Key");
 		
@@ -52,25 +70,34 @@ public class SnakeKeybindingMenu extends JFrame implements ActionListener {
 		exitButton = new JButton("Done");
 		
 		// create some comob-boxes
+		snakePlayerString = new JComboBox<String>();
 		leftKeyString = new JComboBox<String>();
 		rightKeyString = new JComboBox<String>();
 		
+		/**
+		 * Varför måste denna ligga före addActionListener?
+		 * - Går på actionPerformed innan initOptions?
+		 */
+		initOptions();
+
 		// makes the objects listens for actions
+		snakePlayerString.addActionListener(this);
 		leftKeyString.addActionListener(this);
 		rightKeyString.addActionListener(this);
 		exitButton.addActionListener(this);
 		
-		initOptions();
-
 		// set the layout of 'panel' to vertical boxlayout
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
 		// adds the boxes and the buttons to their respective panel
+		snakePlayerPane.add(snakePlayerString);
 		leftKeyPane.add(leftKeyString);
 		rightKeyPane.add(rightKeyString);
 		buttonPane.add(exitButton);
 
 		// adds the panels and the labels to 'panel'
+		panel.add(snakePlayerLabel);
+		panel.add(snakePlayerPane);
 		panel.add(leftKeyLabel);
 		panel.add(leftKeyPane);
 		panel.add(rightKeyLabel);
@@ -81,7 +108,7 @@ public class SnakeKeybindingMenu extends JFrame implements ActionListener {
 		add(panel);
 		
 		// set size, visible and what happends when the frame is closed
-		setSize(120,200);
+		setSize(150,250);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
@@ -139,43 +166,71 @@ public class SnakeKeybindingMenu extends JFrame implements ActionListener {
 		
 		// add som items to the "leftKey"-box and the "rightKey"-box
 
+		for (int i = 0 ; i < numberOfPlayers ; i++)
+			snakePlayerString.addItem("" + (i + 1) + "");
+		
 		for (KeyOption item : keyOptions) {
 			leftKeyString.addItem(item.getText());
 			rightKeyString.addItem(item.getText());
 		}
+		
+		snakePlayerString.setSelectedIndex(0);
 
-		int leftValue = snakeFrame.getLeftKeyValue();
+		updateKeyComboBoxes();
+	}
+	
+	public void updateKeyComboBoxes() {
+		int leftValue = snakeFrame.getLeftKeyValue(snakePlayerString.getSelectedIndex());
 		for (int i = 0 ; i < keyOptions.size() ; i++) {
 			if (keyOptions.get(i).getValue() == leftValue)
 				leftKeyString.setSelectedIndex(i);
 		}
 			
-		int rightValue = snakeFrame.getRightKeyValue();
+		int rightValue = snakeFrame.getRightKeyValue(snakePlayerString.getSelectedIndex());
 		for (int i = 0 ; i < keyOptions.size() ; i++) {
 			if (keyOptions.get(i).getValue() == rightValue)
 				rightKeyString.setSelectedIndex(i);
 		}
 	}
 	
-	public void checkSameKeys() {
-		if(leftKeyString.getSelectedIndex() == rightKeyString.getSelectedIndex())
+	/**
+	 * 
+	 */
+	public void checkValidKeys() {
+		// if the left- and the right-key are the same, if
+		// so the exit-button should not be clickable
+		if (leftKeyString.getSelectedIndex() == rightKeyString.getSelectedIndex())
 			exitButton.setEnabled(false);
 		else
 			exitButton.setEnabled(true);
+
+		for (int i = 0 ; i < snakeFrame.getNumberOfPlayers() ; i++) {
+			// should not do the check for the player against itself
+			if (i == snakePlayerString.getSelectedIndex())
+				continue;
+			
+			// if the chosen key is already in use by some of the 
+			// other players the exit-button should not be clickable
+			if (snakeFrame.getLeftKeyValue(i) == keyOptions.get(leftKeyString.getSelectedIndex()).getValue())
+				exitButton.setEnabled(false);
+			if (snakeFrame.getRightKeyValue(i) == keyOptions.get(rightKeyString.getSelectedIndex()).getValue())
+				exitButton.setEnabled(false);
+		}
 	}
 	
 	/**
 	 * 
 	 */
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == exitButton) {
-			snakeFrame.setKeybindings(keyOptions.get(leftKeyString.getSelectedIndex()).getValue(), keyOptions.get(rightKeyString.getSelectedIndex()).getValue());
+		if (e.getSource() == exitButton) {
+			snakeFrame.setKeybindings(snakePlayerString.getSelectedIndex(), keyOptions.get(leftKeyString.getSelectedIndex()).getValue(), keyOptions.get(rightKeyString.getSelectedIndex()).getValue());
 			setVisible(false);
 		}
-		
-		checkSameKeys();
-	}
-	public static void main(String[] args) {
-		System.out.println("Compiling SnakeKeybindingMenu");
+
+		if (e.getSource() == snakePlayerString) {
+			updateKeyComboBoxes();
+		}
+
+		checkValidKeys();
 	}
 }

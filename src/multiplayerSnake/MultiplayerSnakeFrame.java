@@ -1,19 +1,25 @@
-/**
- * The frame where the snakegame is played
- * 
- * @author Per Nyberg
- * @version 2013.10.17
- */
-
-package originalSnake;
+package multiplayerSnake;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class SnakeFrame extends JFrame implements ActionListener {
+/**
+ * The frame where the snakegame is played
+ * 
+ * TODO:
+ * 		- Lägga in labels som räknar antalet bitar av snaken
+ * 		- Lägga in en till spelare
+ * 		- Lägga in ändringar av keybindings
+ * 		- Lägga in keybinding för att starta om spelet (parallellt med "newGame")
+ * 
+ * @author Per Nyberg
+ * @version 2013.10.17
+ */
+public class MultiplayerSnakeFrame extends JFrame implements ActionListener {
 	// the panel for the snake-game
-	private SnakePanel snakePanel;
+	private MultiplayerSnakePanel snakePanel;
+	//
 	private JPanel buttonPanel;
 	// the button to start the game
 	private JButton startButton;
@@ -21,18 +27,22 @@ public class SnakeFrame extends JFrame implements ActionListener {
 	private JButton pauseButton;
 	// the button to get to the menu where you can change keybindings
 	private JButton keyButton;
+	// 
+	private int numberOfPlayers;
 
 	/**
 	 * Creates the panel for the snakegame and it's belonging buttons
 	 */
-	public SnakeFrame() {
+	public MultiplayerSnakeFrame(int numberOfPlayers) {
 		// sätter panelens dimensioner (förskjuten i x-led, förskjuten i y-led, bredd, höjd)
-		snakePanel = new SnakePanel(20,20,20,15);
+		snakePanel = new MultiplayerSnakePanel(numberOfPlayers, 20,20,20,15);
 
 		buttonPanel = new JPanel();
 		startButton = new JButton("Start");
 		pauseButton = new JButton("Pause");
 		keyButton = new JButton("Change keybindings");
+		
+		this.numberOfPlayers = numberOfPlayers;
 
 		// gör att knapparna kan lyssna på tryckningar
 		startButton.addActionListener(this);
@@ -56,22 +66,29 @@ public class SnakeFrame extends JFrame implements ActionListener {
 	 * @param leftKeyValue
 	 * @param rightKeyValue
 	 */
-	public void setKeybindings(int leftKeyValue, int rightKeyValue) {
-		snakePanel.setKeyBindings(leftKeyValue, rightKeyValue);
+	public void setKeybindings(int playerNumber, int leftKeyValue, int rightKeyValue) {
+		snakePanel.setKeyBindingsForPlayer(playerNumber, leftKeyValue, rightKeyValue);
+	}
+
+	/**
+	 * @return
+	 */
+	public int getNumberOfPlayers() {
+		return numberOfPlayers;
 	}
 
 	/**
 	 * @return value of the "turn left"-key
 	 */
-	public int getLeftKeyValue() {
-		return snakePanel.getLeftKeyValue();
+	public int getLeftKeyValue(int playerNumber) {
+		return snakePanel.getLeftKeyValue(playerNumber);
 	}
 	
 	/**
 	 * @return value of the "turn right"-key
 	 */
-	public int getRightKeyValue() {
-		return snakePanel.getRightKeyValue();
+	public int getRightKeyValue(int playerNumber) {
+		return snakePanel.getRightKeyValue(playerNumber);
 	}
 	
 	/**
@@ -83,14 +100,14 @@ public class SnakeFrame extends JFrame implements ActionListener {
 		}
 
 		// pauses the game (renamed the pause-button)
-		if(e.getSource() == pauseButton && snakePanel.isSnakeAlive()) {
+		if(e.getSource() == pauseButton && !snakePanel.isMaxOneSnakeAlive()) {
 			snakePanel.pause();
 			pauseButton.setText((snakePanel.isGamePaused() ? "Unpause" : "Pause"));
 		}
 		
 		// creates a temporary keybBindingMenu (should be trashed when done with)
 		if(e.getSource() == keyButton) {
-			SnakeKeybindingMenu snakeKeybindingMenu = new SnakeKeybindingMenu(this);
+			MultiplayerSnakeKeybindingMenu multiplayerSnakeKeybindingMenu = new MultiplayerSnakeKeybindingMenu(this, numberOfPlayers);
 		}
 	}
 
@@ -99,6 +116,6 @@ public class SnakeFrame extends JFrame implements ActionListener {
 	 * Not a part of the gamecode
 	 */
 	public static void main(String[] args) {
-		new SnakeFrame();
+		new MultiplayerSnakeFrame(7);
 	}
 }
