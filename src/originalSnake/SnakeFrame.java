@@ -5,7 +5,7 @@
  * @version 2013.10.17
  */
 
-package originalSnake;
+//package originalSnake;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -26,7 +26,7 @@ public class SnakeFrame extends JFrame implements ActionListener {
 	 * Creates the panel for the snakegame and it's belonging buttons
 	 */
 	public SnakeFrame() {
-		// sätter panelens dimensioner (förskjuten i x-led, förskjuten i y-led, bredd, höjd)
+		// sÃ¤tter panelens dimensioner (fÃ¶rskjuten i x-led, fÃ¶rskjuten i y-led, bredd, hÃ¶jd)
 		snakePanel = new SnakePanel(20,20,20,15);
 
 		buttonPanel = new JPanel();
@@ -34,7 +34,7 @@ public class SnakeFrame extends JFrame implements ActionListener {
 		pauseButton = new JButton("Pause");
 		keyButton = new JButton("Change keybindings");
 
-		// gör att knapparna kan lyssna på tryckningar
+		// gÃ¶r att knapparna kan lyssna pÃ¥ tryckningar
 		startButton.addActionListener(this);
 		pauseButton.addActionListener(this);
 		keyButton.addActionListener(this);
@@ -44,7 +44,7 @@ public class SnakeFrame extends JFrame implements ActionListener {
 		buttonPanel.add(keyButton);
 
 		add(snakePanel);
-		// lägger panelen längst ner i framet
+		// lÃ¤gger panelen lÃ¤ngst ner i framet
 		add(BorderLayout.PAGE_END, buttonPanel);
 
 		setSize(330, 330);

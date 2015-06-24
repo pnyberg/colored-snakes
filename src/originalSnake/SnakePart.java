@@ -1,4 +1,5 @@
-package originalSnake;
+// package originalSnake;
+
 /**
  * A part of the snake (the position of that part)
  * 

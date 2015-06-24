@@ -6,7 +6,7 @@
  * @version 2013.10.16
  */
 
-package originalSnake;
+//package originalSnake;
 
 public class KeyOption {
 	// value of the key (KeyEvent.[keyValue])

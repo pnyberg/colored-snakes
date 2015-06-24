@@ -1,91 +1,75 @@
 /**
- * Meny för att ställa in keybindings
+ * Menu for managing keybindings
  */
-
-package originalSnake;
 
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
 public class SnakeKeybindingMenu extends JFrame implements ActionListener {
-	//
 	private SnakeFrame snakeFrame;
-	//
+
 	private LinkedList<KeyOption> keyOptions;
-	//
+
 	private JPanel panel;
-	//
 	private JPanel buttonPane;
-	//
 	private JPanel leftKeyPane;
-	//
 	private JPanel rightKeyPane;
-	//
+
 	private JLabel leftKeyLabel;
-	//
 	private JLabel rightKeyLabel;
-	// when you're done
+
 	private JButton exitButton;
-	//
-	private JComboBox<String> leftKeyString;
-	//
-	private JComboBox<String> rightKeyString;
+
+	private JComboBox<String> leftKeyStringBox;
+	private JComboBox<String> rightKeyStringBox;
 
 	public SnakeKeybindingMenu(SnakeFrame snakeFrame) {
-		// the parameters give the frame so the keybindings can be changed
 		this.snakeFrame = snakeFrame;
 
 		keyOptions = new LinkedList<KeyOption>();
 		
-		// creates some panels
 		panel = new JPanel();
 		buttonPane = new JPanel();
 		leftKeyPane = new JPanel();
 		rightKeyPane = new JPanel();
 		
-		// create some labels
 		leftKeyLabel = new JLabel("Left Key");
 		rightKeyLabel = new JLabel("Right Key");
 		
-		// create an exit-button
 		exitButton = new JButton("Done");
 		
-		// create some comob-boxes
 		leftKeyString = new JComboBox<String>();
 		rightKeyString = new JComboBox<String>();
 		
-		// makes the objects listens for actions
-		leftKeyString.addActionListener(this);
-		rightKeyString.addActionListener(this);
+		leftKeyStrinBox.addActionListener(this);
+		rightKeyStringBox.addActionListener(this);
 		exitButton.addActionListener(this);
 		
 		initOptions();
 
-		// set the layout of 'panel' to vertical boxlayout
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
-		// adds the boxes and the buttons to their respective panel
-		leftKeyPane.add(leftKeyString);
-		rightKeyPane.add(rightKeyString);
+		leftKeyPane.add(leftKeyStringBox);
+		rightKeyPane.add(rightKeyStringBox);
 		buttonPane.add(exitButton);
 
-		// adds the panels and the labels to 'panel'
 		panel.add(leftKeyLabel);
 		panel.add(leftKeyPane);
 		panel.add(rightKeyLabel);
 		panel.add(rightKeyPane);
 		panel.add(buttonPane);
 
-		// puts the panel in the frame
 		add(panel);
 		
-		// set size, visible and what happends when the frame is closed
 		setSize(120,200);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
 	
+	/**
+	 * Possible key-options
+	 */
 	public void initOptions() {
 		keyOptions.add(new KeyOption(KeyEvent.VK_A, "A"));
 		keyOptions.add(new KeyOption(KeyEvent.VK_B, "B"));
@@ -157,6 +141,9 @@ public class SnakeKeybindingMenu extends JFrame implements ActionListener {
 		}
 	}
 	
+	/**
+	 * To make sure you do not have the same key for left and right
+	 */
 	public void checkSameKeys() {
 		if(leftKeyString.getSelectedIndex() == rightKeyString.getSelectedIndex())
 			exitButton.setEnabled(false);
@@ -164,12 +151,13 @@ public class SnakeKeybindingMenu extends JFrame implements ActionListener {
 			exitButton.setEnabled(true);
 	}
 	
-	/**
-	 * 
-	 */
 	public void actionPerformed(ActionEvent e) {
+		int leftIndex = leftKeyString.getSelectedIndex()).getValue();
+		int rightIndex = keyOptions.get(rightKeyString.getSelectedIndex()).getValue();
+
+		// change the keybindings
 		if(e.getSource() == exitButton) {
-			snakeFrame.setKeybindings(keyOptions.get(leftKeyString.getSelectedIndex()).getValue(), keyOptions.get(rightKeyString.getSelectedIndex()).getValue());
+			snakeFrame.setKeybindings(keyOptions.get(leftIndex, rightIndex);
 			setVisible(false);
 		}
 		

@@ -4,7 +4,7 @@
  * @version 2013.10.08
  */
 
-package originalSnake;
+//package originalSnake;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

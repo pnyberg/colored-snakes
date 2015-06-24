@@ -2,7 +2,7 @@
  * The item that when eaten will grow the snake +1
  */
 
-package originalSnake;
+//package originalSnake;
 
 import java.awt.*;
 
