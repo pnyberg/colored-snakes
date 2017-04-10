@@ -39,10 +39,10 @@ public class SnakeKeybindingMenu extends JFrame implements ActionListener {
 		
 		exitButton = new JButton("Done");
 		
-		leftKeyString = new JComboBox<String>();
-		rightKeyString = new JComboBox<String>();
+		leftKeyStringBox = new JComboBox<String>();
+		rightKeyStringBox = new JComboBox<String>();
 		
-		leftKeyStrinBox.addActionListener(this);
+		leftKeyStringBox.addActionListener(this);
 		rightKeyStringBox.addActionListener(this);
 		exitButton.addActionListener(this);
 		
@@ -62,7 +62,7 @@ public class SnakeKeybindingMenu extends JFrame implements ActionListener {
 
 		add(panel);
 		
-		setSize(120,200);
+		setSize(150,200);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
@@ -124,20 +124,20 @@ public class SnakeKeybindingMenu extends JFrame implements ActionListener {
 		// add som items to the "leftKey"-box and the "rightKey"-box
 
 		for (KeyOption item : keyOptions) {
-			leftKeyString.addItem(item.getText());
-			rightKeyString.addItem(item.getText());
+			leftKeyStringBox.addItem(item.getText());
+			rightKeyStringBox.addItem(item.getText());
 		}
 
 		int leftValue = snakeFrame.getLeftKeyValue();
 		for (int i = 0 ; i < keyOptions.size() ; i++) {
 			if (keyOptions.get(i).getValue() == leftValue)
-				leftKeyString.setSelectedIndex(i);
+				leftKeyStringBox.setSelectedIndex(i);
 		}
 			
 		int rightValue = snakeFrame.getRightKeyValue();
 		for (int i = 0 ; i < keyOptions.size() ; i++) {
 			if (keyOptions.get(i).getValue() == rightValue)
-				rightKeyString.setSelectedIndex(i);
+				rightKeyStringBox.setSelectedIndex(i);
 		}
 	}
 	
@@ -145,19 +145,19 @@ public class SnakeKeybindingMenu extends JFrame implements ActionListener {
 	 * To make sure you do not have the same key for left and right
 	 */
 	public void checkSameKeys() {
-		if(leftKeyString.getSelectedIndex() == rightKeyString.getSelectedIndex())
+		if(leftKeyStringBox.getSelectedIndex() == rightKeyStringBox.getSelectedIndex())
 			exitButton.setEnabled(false);
 		else
 			exitButton.setEnabled(true);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		int leftIndex = leftKeyString.getSelectedIndex()).getValue();
-		int rightIndex = keyOptions.get(rightKeyString.getSelectedIndex()).getValue();
+		int leftIndex = leftKeyStringBox.getSelectedIndex();//.getValue();
+		int rightIndex = /*keyOptions.get(*/rightKeyStringBox.getSelectedIndex();//).getValue();
 
 		// change the keybindings
 		if(e.getSource() == exitButton) {
-			snakeFrame.setKeybindings(keyOptions.get(leftIndex, rightIndex);
+			snakeFrame.setKeybindings(keyOptions.get(leftIndex).getValue(), keyOptions.get(rightIndex).getValue());
 			setVisible(false);
 		}
 		

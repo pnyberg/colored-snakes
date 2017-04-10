@@ -53,26 +53,16 @@ public class SnakePanel extends JPanel implements ActionListener {
 	public void init() {
 		int snakeX = 2 + (int)(Math.random() * (width-4));
 		int snakeY = 2 + (int)(Math.random() * (height-4));
-		int snakeDirHelp = (int)(Math.random()*4);
-		String snakeDir = "";
+		int snakeDir = (int)(Math.random()*4);
 		
-		if(snakeDirHelp == 0)
-			snakeDir = "up";
-		else if(snakeDirHelp == 1)
-			snakeDir = "right";
-		else if(snakeDirHelp == 2)
-			snakeDir = "down";
-		else if(snakeDirHelp == 3)
-			snakeDir = "left";
-		
-		if(snakeDir.equals("up") && snakeY <= 4)
-			snakeDir = "down";
-		else if(snakeDir.equals("right") && snakeX >= (width-4))
-			snakeDir = "left";
-		else if(snakeDir.equals("down") && snakeY >= (height-4))
-			snakeDir = "up";
-		else if(snakeDir.equals("left") && snakeX <= 4)
-			snakeDir = "right";
+		if(snakeDir == 0 && snakeY <= 4)
+			snakeDir = 2;
+		else if(snakeDir == 1 && snakeX >= (width-4))
+			snakeDir = 3;
+		else if(snakeDir == 2 && snakeY >= (height-4))
+			snakeDir = 0;
+		else if(snakeDir == 3 && snakeX <= 4)
+			snakeDir = 1;
 		
 		growthItem = new SnakeGrowthItem((int) (Math.random() * width),
 				(int) (Math.random() * height));
@@ -95,33 +85,24 @@ public class SnakePanel extends JPanel implements ActionListener {
 	public void newGame() {
 		int snakeX = 2 + (int)(Math.random() * (width-4));
 		int snakeY = 2 + (int)(Math.random() * (height-4));
-		int snakeDirHelp = (int)(Math.random()*4);
-		String snakeDir = "";
+		int snakeDir = (int)(Math.random()*4);
 		
-		if(snakeDirHelp == 0)
-			snakeDir = "up";
-		else if(snakeDirHelp == 1)
-			snakeDir = "right";
-		else if(snakeDirHelp == 2)
-			snakeDir = "down";
-		else if(snakeDirHelp == 3)
-			snakeDir = "left";
+		if(snakeDir == 0 && snakeY <= 4)
+			snakeDir = 2;
+		else if(snakeDir == 1 && snakeX >= (width-4))
+			snakeDir = 3;
+		else if(snakeDir == 2 && snakeY >= (height-4))
+			snakeDir = 0;
+		else if(snakeDir == 3 && snakeX <= 4)
+			snakeDir = 1;
 		
-		if(snakeDir.equals("up") && snakeY <= 4)
-			snakeDir = "down";
-		else if(snakeDir.equals("right") && snakeX >= (width-4))
-			snakeDir = "left";
-		else if(snakeDir.equals("down") && snakeY >= (height-4))
-			snakeDir = "up";
-		else if(snakeDir.equals("left") && snakeX <= 4)
-			snakeDir = "right";
 		
 		snakePlayer.resetSnake(snakeX, snakeY, snakeDir);
 		setGrowthItemPosition();
 		timer.start();
 	}
 	
-	public void pause() {
+	public void handlePause() {
 		if(timer.isRunning())
 			timer.stop();
 		else
@@ -258,26 +239,26 @@ public class SnakePanel extends JPanel implements ActionListener {
 		public void keyPressed(KeyEvent e) {
 			// turns "right"
 			if (e.getKeyCode() == snakePlayer.getRightKeyValue()) {
-				if (snakePlayer.getSnakeDirection().equals("up"))
-					snakePlayer.turn("right");
-				else if (snakePlayer.getSnakeDirection().equals("right"))
-					snakePlayer.turn("down");
-				else if (snakePlayer.getSnakeDirection().equals("down"))
-					snakePlayer.turn("left");
-				else if (snakePlayer.getSnakeDirection().equals("left"))
-					snakePlayer.turn("up");
+				if (snakePlayer.getSnakeDirection() == 0)
+					snakePlayer.turn(1);
+				else if (snakePlayer.getSnakeDirection() == 1)
+					snakePlayer.turn(2);
+				else if (snakePlayer.getSnakeDirection() == 2)
+					snakePlayer.turn(3);
+				else if (snakePlayer.getSnakeDirection() == 3)
+					snakePlayer.turn(0);
 			}
 
 			// turns "left"
 			if (e.getKeyCode() == snakePlayer.getLeftKeyValue()) {
-				if (snakePlayer.getSnakeDirection().equals("up"))
-					snakePlayer.turn("left");
-				else if (snakePlayer.getSnakeDirection().equals("right"))
-					snakePlayer.turn("up");
-				else if (snakePlayer.getSnakeDirection().equals("down"))
-					snakePlayer.turn("right");
-				else if (snakePlayer.getSnakeDirection().equals("left"))
-					snakePlayer.turn("down");
+				if (snakePlayer.getSnakeDirection() == 0)
+					snakePlayer.turn(3);
+				else if (snakePlayer.getSnakeDirection() == 1)
+					snakePlayer.turn(0);
+				else if (snakePlayer.getSnakeDirection() == 2)
+					snakePlayer.turn(1);
+				else if (snakePlayer.getSnakeDirection() == 3)
+					snakePlayer.turn(2);
 			}
 		}
 	};
@@ -301,6 +282,7 @@ public class SnakePanel extends JPanel implements ActionListener {
 		g.setColor(Color.white);
 		g.drawString("Current size of snake: " + snakePlayer.getSnakeLength(), width*5-50, height*10+30);
 	}
+
 	public static void main(String[] args) {
 		System.out.println("Compiling SnakePanel");
 	}

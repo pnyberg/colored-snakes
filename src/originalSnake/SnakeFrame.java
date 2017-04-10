@@ -3,38 +3,46 @@
  * 
  * @author Per Nyberg
  * @version 2013.10.17
+ * @last_updated 2017.04.10
  */
 
 //package originalSnake;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class SnakeFrame extends JFrame implements ActionListener {
-	// the panel for the snake-game
+	private final int frameWidth = 370;
+	private final int frameHeight = 330;
+	private final int adjustmentX = 20;
+	private final int adjustmentY = 20;
+	private final int boardWidth = 20;
+	private final int boardHeight = 20;
+
 	private SnakePanel snakePanel;
 	private JPanel buttonPanel;
-	// the button to start the game
-	private JButton startButton;
-	// the button to pause the game
-	private JButton pauseButton;
-	// the button to get to the menu where you can change keybindings
-	private JButton keyButton;
+	private JButton startButton, pauseButton, keyButton;
+	private boolean gameStarted;
 
 	/**
 	 * Creates the panel for the snakegame and it's belonging buttons
 	 */
 	public SnakeFrame() {
-		// sätter panelens dimensioner (förskjuten i x-led, förskjuten i y-led, bredd, höjd)
-		snakePanel = new SnakePanel(20,20,20,15);
+		snakePanel = new SnakePanel(adjustmentX, adjustmentY, boardWidth, boardHeight);
 
 		buttonPanel = new JPanel();
 		startButton = new JButton("Start");
 		pauseButton = new JButton("Pause");
 		keyButton = new JButton("Change keybindings");
 
-		// gör att knapparna kan lyssna på tryckningar
+		gameStarted = false;
+
+		pauseButton.setEnabled(false);
+
 		startButton.addActionListener(this);
 		pauseButton.addActionListener(this);
 		keyButton.addActionListener(this);
@@ -44,17 +52,17 @@ public class SnakeFrame extends JFrame implements ActionListener {
 		buttonPanel.add(keyButton);
 
 		add(snakePanel);
-		// lägger panelen längst ner i framet
+
 		add(BorderLayout.PAGE_END, buttonPanel);
 
-		setSize(330, 330);
+		setSize(frameWidth, frameHeight);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 	
 	/**
-	 * @param leftKeyValue
-	 * @param rightKeyValue
+	 * @param leftKeyValue 	the key binded for left turns
+	 * @param rightKeyValue	the key binded for right turns
 	 */
 	public void setKeybindings(int leftKeyValue, int rightKeyValue) {
 		snakePanel.setKeyBindings(leftKeyValue, rightKeyValue);
@@ -80,11 +88,13 @@ public class SnakeFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == startButton) {
 			snakePanel.newGame();
+			pauseButton.setEnabled(true);
+			gameStarted = true;
 		}
 
 		// pauses the game (renamed the pause-button)
-		if(e.getSource() == pauseButton && snakePanel.isSnakeAlive()) {
-			snakePanel.pause();
+		if(e.getSource() == pauseButton && snakePanel.isSnakeAlive() && gameStarted) {
+			snakePanel.handlePause();
 			pauseButton.setText((snakePanel.isGamePaused() ? "Unpause" : "Pause"));
 		}
 		
@@ -94,10 +104,6 @@ public class SnakeFrame extends JFrame implements ActionListener {
 		}
 	}
 
-	/**
-	 * Testing ground, what up?
-	 * Not a part of the gamecode
-	 */
 	public static void main(String[] args) {
 		new SnakeFrame();
 	}

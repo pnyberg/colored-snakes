@@ -5,16 +5,16 @@
  * 
  * @author Per Nyberg
  * @version 2013.10.08
+ * @last_updated 2017.04.10
  */
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 
 public class SnakePart {
-	// x-coordinate
-	private int x;
-	// y-coordinate
-	private int y;
-	// color
+	public static final int size = 10;
+
+	private int x, y;
 	private Color snakeColor;
 	
 	/**
@@ -98,11 +98,14 @@ public class SnakePart {
 	 * Paint the snakePart
 	 * 
 	 * @param g		Graphics-parameter, used to paint the snakePart
+	 * @param addX	the adjustment to the x-coordinate
+	 * @param addY	the adjustment to the y-coordinate
 	 */
-	public void paint(Graphics g, int additionalPositionX, int additionalPositionY) {
+	public void paint(Graphics g, int addX, int addY) {
 		g.setColor(snakeColor);
-		g.fillOval(additionalPositionX + x*10, additionalPositionY + y*10, 10, 10);
+		g.fillOval(x*size + addX, y*size + addY, size, size);
 	}
+
 	public static void main(String[] args) {
 		System.out.println("Compiling SnakePart");
 	}

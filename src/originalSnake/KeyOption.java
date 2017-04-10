@@ -4,14 +4,13 @@
  * 
  * @author Per Nyberg
  * @version 2013.10.16
+ * @last_updated 2017.04.10
  */
 
 //package originalSnake;
 
 public class KeyOption {
-	// value of the key (KeyEvent.[keyValue])
 	private int keyValue;
-	// the text representing the key
 	private String keyText;
 	
 	/**

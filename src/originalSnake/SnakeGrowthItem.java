@@ -1,20 +1,23 @@
 /**
  * The item that when eaten will grow the snake +1
+ *
+ * @author 			Per Nyberg
+ * @created 		????
+ * @last_updated	2017.04.10
  */
+
 
 //package originalSnake;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 
 public class SnakeGrowthItem {
-	// the x-coordinate
-	private int x;
-	// the y-coordinate
-	private int y;
-	// the shift in x-coordinate
-	private int repositioningX;
-	// the shift in y-coordinate
-	private int repositioningY;
+	private final Color fillColor = Color.red;
+	private final Color outlineColor = Color.black;
+
+	private int x, y;
+	private int adjustmentX, adjustmentY;
 	
 	/**
 	 * Sets the position of the growth-object
@@ -26,26 +29,9 @@ public class SnakeGrowthItem {
 		this.y = y;
 	}
 	
-	public void setPositionBase(int additionalX, int additionalY) {
-		repositioningX = additionalX;
-		repositioningY = additionalY;
-	}
-
-	/**
-	 * Paints the item
-	 */
-	public void paint(Graphics g) {
-		g.setColor(Color.red);
-		g.fillOval(repositioningX + x*10, repositioningY + y*10, 10, 10);
-		g.setColor(Color.black);
-		g.drawOval(repositioningX + x*10, repositioningY + y*10, 10, 10);
-	}
-
-	/**
-	 * @return x-coordinate
-	 */
-	public int getX() {
-		return x;
+	public void setPositionBase(int adjustmentX, int adjustmentY) {
+		this.adjustmentX = adjustmentX;
+		this.adjustmentY = adjustmentY;
 	}
 
 	/**
@@ -57,6 +43,21 @@ public class SnakeGrowthItem {
 	}
 
 	/**
+	 * Sets the y-coordinate
+	 * @param y
+	 */
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	/**
+	 * @return x-coordinate
+	 */
+	public int getX() {
+		return x;
+	}
+
+	/**
 	 * @return y-coordinate
 	 */
 	public int getY() {
@@ -64,10 +65,14 @@ public class SnakeGrowthItem {
 	}
 
 	/**
-	 * Sets the y-coordinate
-	 * @param y
+	 * Paints the item
 	 */
-	public void setY(int y) {
-		this.y = y;
+	public void paint(Graphics g) {
+		int size = SnakePart.size;
+
+		g.setColor(fillColor);
+		g.fillOval(adjustmentX + x*size, adjustmentY + y*size, size, size);
+		g.setColor(outlineColor);
+		g.drawOval(adjustmentX + x*size, adjustmentY + y*size, size, size);
 	}
 }
